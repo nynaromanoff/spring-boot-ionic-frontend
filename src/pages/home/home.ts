@@ -28,6 +28,7 @@ export class HomePage {
       this.menu.swipeEnable(true);
       }
 
+
   ionViewDidEnter() {
     this.auth.refreshtoken()
       .subscribe(response =>{
