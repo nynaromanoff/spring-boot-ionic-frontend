@@ -4,13 +4,15 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { API_CONFIG } from "../../config/api.config";
 import { ClienteDTO } from '../../models/cliente.dto';
 import { StorageService } from '../storage.service';
+import { ImageUtilService } from '../image-util';
 
 @Injectable()
 export class ClienteService {
 
   constructor(
     public http: HttpClient,
-    public storage: StorageService){
+    public storage: StorageService,
+    public imagemUtilService: ImageUtilService){
 
   }
 
@@ -37,6 +39,20 @@ export class ClienteService {
       }
     );
 
+  }
+
+  uploadPicture (picture) {
+    let pictureBlob = this.imagemUtilService.dataUriToBlob(picture);
+    let formData : FormData = new FormData();
+    formData.set('file', pictureBlob, 'file.png');
+    return this.http.post(
+      `${API_CONFIG.baseUrl}/clientes/picture`,
+      formData,
+      {
+        observe: 'response',
+        responseType: 'text'
+      }
+    );
   }
 
 }
